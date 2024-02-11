@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
     public TextMeshProUGUI goldCount;
+    public GameObject winText;
     public float speed = 0;
     private int gold;
 
@@ -18,11 +19,16 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         gold = 0;
         SetCountText();
+        winText.SetActive(false);
     }
 
     void SetCountText()
     {
      goldCount.text = "Gold:" + gold.ToString();
+     if(gold == 11) 
+     {
+        winText.SetActive(true);
+     }
     }
     void FixedUpdate()
     {
