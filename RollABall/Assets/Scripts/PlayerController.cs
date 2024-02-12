@@ -11,7 +11,11 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI goldCount;
     public GameObject winText;
     public float speed = 0;
+    public float jumpSpeed = 0;
     private int gold;
+    bool canJump = true;
+    public Vector3 startPosition = new Vector3(0,3,0);
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +48,32 @@ public class PlayerController : MonoBehaviour
           other.gameObject.SetActive(false);
           gold++;
           SetCountText();
+        }
+    }
+
+    void Update() 
+    {
+     if(transform.position.y < -40f) 
+     {
+      transform.position = startPosition;
+      rb.velocity = Vector3.zero;
+      rb.angularVelocity = Vector3.zero;
+      winText.SetActive(false);
+      goldCount.text = "Gold: 0";
+      gold = 0;
+     }   
+     if(canJump && Input.GetKey(KeyCode.Space))
+     {
+        Vector3 atas = new Vector3(0,20,0);
+        rb.AddForce(atas * jumpSpeed);
+        canJump = false;
+     }
+    }
+
+    void OnCollisionEnter(Collision collision) {
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            canJump = true;
         }
     }
 }
